@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+/* ── Enterprise Cybersecurity Color Tokens ─────────────────────────────────── */
+:root {
+  --color-main-bg: #080D17;
+  --color-primary-panel: #101827;
+  --color-secondary-panel: #141F30;
+  --color-elevated-surface: #192538;
+  --color-primary-border: #273449;
+  --color-subtle-border: #1B2738;
+  --color-primary-text: #E5EAF2;
+  --color-secondary-text: #94A3B8;
+  --color-muted-text: #64748B;
+  --color-primary-accent: #3B82F6;
+  --color-success: #22C55E;
+  --color-warning: #F59E0B;
+  --color-critical: #EF4444;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  background-color: var(--color-main-bg);
+  color: var(--color-primary-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+  min-height: 100vh;
+}
+
+/* ── Enterprise Panels & Surfaces ─────────────────────────────────────────── */
+.enterprise-panel {
+  background-color: var(--color-primary-panel);
+  border: 1px solid var(--color-primary-border);
+  border-radius: 8px;
+}
+
+.enterprise-panel-secondary {
+  background-color: var(--color-secondary-panel);
+  border: 1px solid var(--color-subtle-border);
+  border-radius: 6px;
+}
+
+.enterprise-surface-elevated {
+  background-color: var(--color-elevated-surface);
+  border: 1px solid var(--color-primary-border);
+  border-radius: 6px;
+}
+
+/* ── Precision Input Sliders ──────────────────────────────────────────────── */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: #141F30;
+  height: 4px;
+  border-radius: 2px;
+  outline: none;
+  border: 1px solid #273449;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  background: #3B82F6;
+  cursor: pointer;
+  border: 2px solid #101827;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  background: #60A5FA;
+  transform: scale(1.1);
+}
+
+/* ── Enterprise Numeric Input ─────────────────────────────────────────────── */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+/* ── Precision Scrollbar ──────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #080D17;
+}
+::-webkit-scrollbar-thumb {
+  background: #273449;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3B82F6;
+}
+
+/* ── Accessibility ────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,18 @@
+# Flask Telemetry, Mitigation & Red Team Attack Orchestrator API
+FROM python:3.10-slim
+
+WORKDIR /app
+
+RUN pip install --no-cache-dir \
+    Flask==3.0.3 \
+    flask-cors==6.0.5
+
+COPY dashboard/ /app/dashboard/
+COPY logs/ /app/logs/
+
+EXPOSE 5000
+
+ENV PYTHONUNBUFFERED=1
+
+CMD ["python", "dashboard/app.py"]
+

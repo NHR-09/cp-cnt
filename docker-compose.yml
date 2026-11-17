@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  # ============================================================================
+  # 1. SDN CONTROLLER & OPENFLOW 1.3 MIDDLEWARE
+  # ============================================================================
+  sdn-controller:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.controller
+    container_name: sdn-controller
+    ports:
+      - "6653:6653"    # OpenFlow 1.3 protocol port
+    volumes:
+      - ./logs:/app/logs
+      - ./controller:/app/controller
+      - ./detection:/app/detection
+      - ./mitigation:/app/mitigation
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+
+  # ============================================================================
+  # 2. FLASK UNIFIED TELEMETRY & ATTACK ORCHESTRATOR API
+  # ============================================================================
+  dashboard-api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.backend
+    container_name: sdn-dashboard-api
+    ports:
+      - "5000:5000"    # REST API & Attack Orchestrator
+    volumes:
+      - ./logs:/app/logs
+      - ./dashboard:/app/dashboard
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - sdn-controller
+    restart: unless-stopped
+
+  # ============================================================================
+  # 3. NEXT.JS 3-WINDOW UNIFIED DASHBOARD UI
+  # ============================================================================
+  dashboard-ui:
+    build:
+      context: ./frontend
+      dockerfile: ../docker/Dockerfile.frontend
+    container_name: sdn-dashboard-ui
+    ports:
+      - "3000:3000"    # Unified 3-Window Browser UI
+    environment:
+      - NEXT_PUBLIC_API_BASE=http://localhost:5000
+    depends_on:
+      - dashboard-api
+    restart: unless-stopped
+
+networks:
+  default:
+    name: sdn-defense-network
+

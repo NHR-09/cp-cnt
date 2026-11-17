@@ -1,0 +1,1 @@
+timestamp,iso_time,dpid,priority,in_port,eth_src,eth_dst,flow_type,packet_count,byte_count,duration_sec,flow_pps,flow_bps,target_server1

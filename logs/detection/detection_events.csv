@@ -1,0 +1,1 @@
+timestamp,iso_time,server_ip,packet_rate,byte_rate,active_flows,unique_sources,traffic_concentration,suspicion_score,consecutive_suspicious,detection_status,reason
