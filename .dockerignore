@@ -1,0 +1,9 @@
+.git
+.codegraph
+artifacts
+**/node_modules
+**/.next
+frontend/REDESIGN.md
+*.log
+__pycache__
+*.py[cod]
