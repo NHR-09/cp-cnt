@@ -8,6 +8,7 @@ export default function DynamicTopology({
   isFiring = false,
   sdnControl = {},
   connection,
+  botCount = 1,
   compact = false,
 }) {
   const [zoom, setZoom] = useState(1),
@@ -21,8 +22,16 @@ export default function DynamicTopology({
       </Empty>
     );
   const clients = network.hosts.filter((n) => n.type === "client"),
-    bots = network.hosts.filter((n) => n.type === "attacker"),
     backends = network.hosts.filter((n) => n.type === "private_backend");
+  const simulatedBots = Array.from({ length: botCount }, (_, i) => ({
+    id: `bot-${i + 1}`,
+    name: `Simulated bot ${i + 1}`,
+    mac: `00:00:00:00:00:${(0xa1 + i).toString(16)}`,
+    ip: "simulated source",
+    type: "attacker",
+    x: 690 + Math.floor(i / 5) * 150,
+    y: 40 + (i % 5) * 70,
+  }));
   const nodes = [
     ...clients.map((n, i) => ({ ...n, x: 100, y: 75 + i * 110 })),
     ...network.switches.map((n, i) => ({
@@ -31,19 +40,22 @@ export default function DynamicTopology({
       x: 310 + i * 240,
       y: 185,
     })),
-    ...bots.map((n, i) => ({ ...n, x: 550 + i * 180, y: 60 })),
-    ...backends.map((n, i) => ({ ...n, x: 790, y: 230 + i * 90 })),
+    ...simulatedBots,
+    ...backends.map((n, i) => ({ ...n, x: 1000, y: 185 + i * 90 })),
   ];
   const edges = [
     ...clients.map((n) => [n.id, "s1"]),
     ["s1", "s2"],
-    ...bots.map((n) => [n.id, "s2"]),
+    ...simulatedBots.map((n) => [n.id, "s2"]),
     ...backends.map((n) => ["s2", n.id]),
   ];
   return (
     <div className={"topology" + (compact ? " compact-topology" : "")}>
       <div className="topology-toolbar">
-        <span>{nodes.length} configured nodes · logical connections</span>
+        <span>
+          {network.hosts.length + network.switches.length} mapped nodes · {botCount} simulated attack source
+          {botCount === 1 ? "" : "s"}
+        </span>
         <div className="actions">
           <span className="mono">{Math.round(zoom * 100)}%</span>
           <button
@@ -89,16 +101,16 @@ export default function DynamicTopology({
         onPointerUp={() => (drag.current = null)}
         onPointerCancel={() => (drag.current = null)}
       >
-        <svg viewBox="0 0 900 370" aria-label="Configured network topology">
+        <svg viewBox="0 0 1100 370" aria-label="Configured network topology">
           <g
             transform={
               "translate(" +
               pan.x +
               "," +
               pan.y +
-              ") translate(450 185) scale(" +
+              ") translate(550 185) scale(" +
               zoom +
-              ") translate(-450 -185)"
+              ") translate(-550 -185)"
             }
           >
             {edges.map(([a, b]) => {
